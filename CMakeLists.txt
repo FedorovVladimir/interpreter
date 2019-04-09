@@ -3,4 +3,4 @@ project(interpreter)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(interpreter main.cpp)
+add_executable(interpreter src/code/main.cpp)
