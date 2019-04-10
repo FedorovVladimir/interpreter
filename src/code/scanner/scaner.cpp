@@ -1,16 +1,17 @@
 #include "scaner.h"
-#include "defs.h"
+#include "Lexeme.h"
 
 #include <string>
 #include <cstring>
+#include <iostream>
 
 Scanner::Scanner(char *fileName)
 {
     getData(fileName);
     putCP(0);
 }
-TypeLex keyWord[MAX_KEY_W] = {"if", "else", "struct", "void", "int", "double", "main"};
-int indexKeyWord[MAX_KEY_W] = {T_IF, T_ELSE, T_STRUCT, T_VOID, T_INT, T_DOUBLE, T_MAIN};
+TypeLex keyWord[MAX_KEY_W] = {"if", "else", "void", "int", "double", "main"};
+int indexKeyWord[MAX_KEY_W] = {IF, ELSE, VOID, INT, DOUBLE, MAIN};
 
 void Scanner::putCP(int i)
 {
@@ -64,7 +65,7 @@ int Scanner::scanerMain(TypeLex lexeme)
         if (inputText[currentPosition] == '\0')
         {
             lexeme[0] = '#';
-            return TEnd;
+            return END_OF_FILE;
         }
         goto start;
     }
@@ -72,7 +73,7 @@ int Scanner::scanerMain(TypeLex lexeme)
     if (inputText[currentPosition] == '\0')
     {
         lexeme[0] = '#';
-        return TEnd;
+        return END_OF_FILE;
     }
     if (inputText[currentPosition] <= '9' && inputText[currentPosition] >= '0')
     {
@@ -95,7 +96,7 @@ int Scanner::scanerMain(TypeLex lexeme)
                     goto N2;
                 }
 
-                return TConsInt;
+                return CONST_INT;
 
     }
     else if (inputText[currentPosition] >= 'a' && inputText[currentPosition] <= 'z' || inputText[currentPosition] >= 'A' && inputText[currentPosition] <= 'Z')
@@ -116,7 +117,7 @@ int Scanner::scanerMain(TypeLex lexeme)
                 return indexKeyWord[elementKeyWord];
             }
         }
-        return TIdent;
+        return ID;
     }
     else if (inputText[currentPosition] == '.')
     {
@@ -126,52 +127,52 @@ int Scanner::scanerMain(TypeLex lexeme)
             lexeme[i++] = inputText[currentPosition++];
             goto N1;
         }
-        return TPoint;
+        return POINT;
     }
     else if (inputText[currentPosition] == ',')
     {
         lexeme[i++] = inputText[currentPosition++];
-        return TComma;
+        return COMMA;
     }
     else if (inputText[currentPosition] == ';')
     {
         lexeme[i++] = inputText[currentPosition++];
-        return TPC;
+        return POINT_COMMA;
     }
     else if (inputText[currentPosition] == '(')
     {
         lexeme[i++] = inputText[currentPosition++];
-        return TLS;
+        return OPEN_KRUGLAY_SKOBKA;
     }
     else if (inputText[currentPosition] == ')')
     {
         lexeme[i++] = inputText[currentPosition++];
-        return TPS;
+        return CLOSE_KRUGLAY_SKOBKA;
     }
     else if (inputText[currentPosition] == '{')
     {
         lexeme[i++] = inputText[currentPosition++];
-        return TFLS;
+        return OPEN_FIGURNAY_SKOBKA;
     }
     else if (inputText[currentPosition] == '}')
     {
         lexeme[i++] = inputText[currentPosition++];
-        return TFPS;
+        return CLOSE_FIGURNAY_SKOBKA;
     }
     else if (inputText[currentPosition] == '*')
     {
         lexeme[i++] = inputText[currentPosition++];
-        return TMult;
+        return MUL;
     }
     else if (inputText[currentPosition] == '%')
     {
         lexeme[i++] = inputText[currentPosition++];
-        return TMod;
+        return MOD;
     }
     else if (inputText[currentPosition] == '/')
     {
         lexeme[i++] = inputText[currentPosition++];
-        return TDiv;
+        return DIV;
     }
     else if (inputText[currentPosition] == '=')
     {
@@ -179,10 +180,10 @@ int Scanner::scanerMain(TypeLex lexeme)
         if (inputText[currentPosition] == '=')
         {
             lexeme[i++] = inputText[currentPosition++];
-            return TEQ;
+            return EQUAL;
         }
         else
-            return TSave;
+            return SAVE;
     }
     else if (inputText[currentPosition] == '!')
     {
@@ -190,12 +191,12 @@ int Scanner::scanerMain(TypeLex lexeme)
         if (inputText[currentPosition] == '=')
         {
             lexeme[i++] = inputText[currentPosition++];
-            return TNEQ;
+            return NOT_EQUAL;
         }
         else
         {
             printErrorScan("Error symbol", lexeme);
-            return TError;
+            return ERROR;
         }
     }
     else if (inputText[currentPosition] == '>')
@@ -204,15 +205,15 @@ int Scanner::scanerMain(TypeLex lexeme)
         if (inputText[currentPosition] == '=')
         {
             lexeme[i++] = inputText[currentPosition++];
-            return TGE;
+            return LARGER_EQUAL;
         }
         else if (inputText[currentPosition] == '>')
         {
             lexeme[i++] = inputText[currentPosition++];
-            return TShiftR;
+            return LARGER_LARGER;
         }
         else
-            return TGT;
+            return LARGER;
     }
     else if (inputText[currentPosition] == '<')
     {
@@ -220,15 +221,15 @@ int Scanner::scanerMain(TypeLex lexeme)
         if (inputText[currentPosition] == '=')
         {
             lexeme[i++] = inputText[currentPosition++];
-            return TLE;
+            return LESS_EQUAL;
         }
         else if (inputText[currentPosition] == '<')
         {
             lexeme[i++] = inputText[currentPosition++];
-            return TShiftL;
+            return LESS_LESS;
         }
         else
-            return TLT;
+            return LESS;
     }
     else if (inputText[currentPosition] == '|')
     {
@@ -236,10 +237,10 @@ int Scanner::scanerMain(TypeLex lexeme)
         if (inputText[currentPosition] == '|')
         {
             lexeme[i++] = inputText[currentPosition++];
-            return TDoubleOr;
+            return OR_OR;
         }
         else
-            return TOr;
+            return OR;
     }
     else if (inputText[currentPosition] == '&')
     {
@@ -247,10 +248,10 @@ int Scanner::scanerMain(TypeLex lexeme)
         if (inputText[currentPosition] == '&')
         {
             lexeme[i++] = inputText[currentPosition++];
-            return TDoubleAnd;
+            return AND_AND;
         }
         else
-            return TAnd;
+            return AND;
     }
     else if (inputText[currentPosition] == '+')
     {
@@ -258,10 +259,10 @@ int Scanner::scanerMain(TypeLex lexeme)
         if (inputText[currentPosition] == '+')
         {
             lexeme[i++] = inputText[currentPosition++];
-            return TInc;
+            return INC;
         }
         else
-            return TPlus;
+            return PLUS;
     }
     else if (inputText[currentPosition] == '-')
     {
@@ -269,16 +270,16 @@ int Scanner::scanerMain(TypeLex lexeme)
         if (inputText[currentPosition] == '-')
         {
             lexeme[i++] = inputText[currentPosition++];
-            return TDec;
+            return DEC;
         }
         else
-            return TMinus;
+            return MINUS;
     }
     else
     {
         lexeme[i++] = inputText[currentPosition++];
         printErrorScan("Unknown symbol", lexeme);
-        return TError;
+        return ERROR;
     }
     N1:
     while (inputText[currentPosition] <= '9' && inputText[currentPosition] >= '0')
@@ -293,7 +294,7 @@ int Scanner::scanerMain(TypeLex lexeme)
         lexeme[i++] = inputText[currentPosition++];
         goto N2;
     }
-    return TConsFloat;
+    return CONST_FLOAT;
     N2:
     if (inputText[currentPosition] == '+' || inputText[currentPosition] == '-')
     {
@@ -309,7 +310,7 @@ int Scanner::scanerMain(TypeLex lexeme)
         else
         {
             printErrorScan("Error const", lexeme);
-            return TError;
+            return ERROR;
         }    
     }
     /*else if(inputText[currentPosition] == ' ' || inputText[currentPosition] == '\n' || inputText[currentPosition] == '\t' || inputText[currentPosition] != ';')
@@ -325,7 +326,7 @@ int Scanner::scanerMain(TypeLex lexeme)
         else
             currentPosition++;
     }
-    return TConsExp;
+    return CONST_EXP;
 }
 
 void Scanner::getData(char *fileName)

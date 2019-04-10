@@ -1,8 +1,17 @@
 #ifndef SCANER_H
 #define SCANER_H
-#include "defs.h"
+#include "Lexeme.h"
+
+//Максимальная длина текста, лексемы
+#define MAX_TEXT 1000
+#define MAX_LEX 30
+//Число ключевых слов
+#define MAX_KEY_W 7
 
 using namespace std;
+
+typedef char TypeLex[MAX_LEX];
+typedef char TypeMod[MAX_TEXT];
 
 class Scanner
 {
