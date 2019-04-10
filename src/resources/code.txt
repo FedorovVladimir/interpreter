@@ -13,7 +13,7 @@ void main ()
 	int mainchik;
 	double ddddd;
 	main();
-	;
+	a&&b;
 	int text1;
 		
 	{
