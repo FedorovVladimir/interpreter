@@ -1,25 +1,25 @@
 #include "Sanner.h"
-#include "Lexeme.h"
+#include "TypeLexeme.h"
 
 #include <string>
 #include <iostream>
 
 const string oneSymbols = ",;(){}*%/\n";
-const Lexeme oneLexemes[] = {COMMA, POINT_COMMA, OPEN_KRUGLAY_SKOBKA, CLOSE_KRUGLAY_SKOBKA, OPEN_FIGURNAY_SKOBKA, CLOSE_FIGURNAY_SKOBKA, MUL, MOD, DIV, END_OF_FILE};
+const TypeLexeme oneLexemes[] = {COMMA, POINT_COMMA, OPEN_KRUGLAY_SKOBKA, CLOSE_KRUGLAY_SKOBKA, OPEN_FIGURNAY_SKOBKA, CLOSE_FIGURNAY_SKOBKA, MUL, MOD, DIV, END_OF_FILE};
 
 const string doubleSymbols = "||&&++--==";
-const Lexeme doubleLexemes[] = {OR, OR_OR, AND, AND_AND, PLUS, INC, MINUS, DEC, SAVE, EQUAL};
+const TypeLexeme doubleLexemes[] = {OR, OR_OR, AND, AND_AND, PLUS, INC, MINUS, DEC, SAVE, EQUAL};
 
 const string s1 = "><";
-const Lexeme l1[] = {LARGER, LESS};
+const TypeLexeme l1[] = {LARGER, LESS};
 const string s2 = "><";
-const Lexeme l2[] = {LARGER_LARGER, LESS_LESS};
+const TypeLexeme l2[] = {LARGER_LARGER, LESS_LESS};
 const string s3 = "==";
-const Lexeme l3[] = {LARGER_EQUAL, LESS_EQUAL};
+const TypeLexeme l3[] = {LARGER_EQUAL, LESS_EQUAL};
 
 const int countWords = 6;
 const string stringWord[] = {"if", "else", "void", "int", "double", "main"};
-const Lexeme lexemeWord[] = {IF, ELSE, VOID, INT, DOUBLE, MAIN};
+const TypeLexeme lexemeWord[] = {IF, ELSE, VOID, INT, DOUBLE, MAIN};
 
 void Scanner::swapGarbageSymbols() {
     while (text[currentPosition] == ' ' || text[currentPosition] == '\n' || text[currentPosition] == '\t' || text[currentPosition] == '\r')
@@ -38,9 +38,9 @@ void Scanner::swapComment() {
     }
 }
 
-Lexeme Scanner::next() {
+Node* Scanner::next() {
     if (currentPosition == text.length()) {
-        return END_OF_FILE;
+        return new Node(END_OF_FILE);
     }
 
     swapGarbageSymbols();
@@ -50,7 +50,7 @@ Lexeme Scanner::next() {
     int indexOneSymbols = oneSymbols.find(text[currentPosition]);
     if (0 <= indexOneSymbols && indexOneSymbols < oneSymbols.length()) {
         currentPosition++;
-        return oneLexemes[indexOneSymbols];
+        return new Node(oneLexemes[indexOneSymbols]);
     }
 
     // | || & && + ++ - -- = ==
@@ -60,9 +60,9 @@ Lexeme Scanner::next() {
         int indexDoubleSymbols2 = doubleSymbols.find(text[currentPosition]);
         if (0 <= indexDoubleSymbols2 && indexDoubleSymbols2 < doubleSymbols.length()) {
             currentPosition++;
-            return doubleLexemes[indexDoubleSymbols2 + 1];
+            return new Node(doubleLexemes[indexDoubleSymbols2 + 1]);
         } else {
-            return doubleLexemes[indexDoubleSymbols1];
+            return new Node(doubleLexemes[indexDoubleSymbols1]);
         }
     }
 
@@ -71,9 +71,9 @@ Lexeme Scanner::next() {
         currentPosition++;
         if (text[currentPosition] == '=') {
             currentPosition++;
-            return NOT_EQUAL;
+            return new Node(NOT_EQUAL);
         } else {
-            return ERROR;
+            return new Node(ERROR);
         }
     }
 
@@ -85,12 +85,12 @@ Lexeme Scanner::next() {
         int index3 = s3.find(text[currentPosition]);
         if (0 <= index2 && index2 < s2.length()) {
             currentPosition++;
-            return l2[index2];
+            return new Node(l2[index2]);
         } else if (0 <= index3 && index3 < s3.length()) {
             currentPosition++;
-            return l3[index3];
+            return new Node(l3[index3]);
         } else
-            return l1[index1];
+            return new Node(l1[index1]);
     }
 
     // id
@@ -102,14 +102,14 @@ Lexeme Scanner::next() {
         }
         for (int i = 0; i < countWords; i++) {
             if (s == stringWord[i]) {
-                return lexemeWord[i];
+                return new Node(lexemeWord[i]);
             }
         }
-        return ID;
+        return new Node(ID, s);
     }
 
     if (!isdigit(text[currentPosition]) && text[currentPosition] != '.') {
-        return ERROR;
+        return new Node(ERROR);
     }
 
     string s;
@@ -125,7 +125,7 @@ Lexeme Scanner::next() {
             s += text[currentPosition++];
             goto N2;
         }
-        return CONST_INT;
+        return new Node(CONST_INT, s);
     }
     if (text[currentPosition] == '.') {
         s += text[currentPosition++];
@@ -133,7 +133,7 @@ Lexeme Scanner::next() {
             s += text[currentPosition++];
             goto N1;
         }
-        return POINT;
+        return new Node(POINT, s);
     }
     N1:
     while (isdigit(text[currentPosition])) {
@@ -143,7 +143,7 @@ Lexeme Scanner::next() {
         s += text[currentPosition++];
         goto N2;
     }
-    return CONST_FLOAT;
+    return new Node(CONST_FLOAT, s);
     N2:
     if (text[currentPosition] == '+' || text[currentPosition] == '-') {
         s += text[currentPosition++];
@@ -151,12 +151,12 @@ Lexeme Scanner::next() {
             s += text[currentPosition++];
             goto N3;
         } else {
-            return ERROR;
+            return new Node(ERROR);
         }
     }
     N3:
     while (isdigit(text[currentPosition])) {
         s += text[currentPosition++];
     }
-    return CONST_EXP;
+    return new Node(CONST_EXP);
 }

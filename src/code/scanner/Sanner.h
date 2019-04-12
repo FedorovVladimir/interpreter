@@ -4,7 +4,7 @@
 #define SCANER_H
 
 #include <string>
-#include "Lexeme.h"
+#include "Node.h"
 
 using namespace std;
 
@@ -13,8 +13,6 @@ class Scanner {
 private:
     string text = "";
     int currentPosition = 0;
-    Lexeme currentLexeme;
-    Lexeme nextLexeme;
 
     void swapGarbageSymbols();
     void swapComment();
@@ -29,18 +27,22 @@ public:
         return currentPosition;
     }
 
-    Lexeme getCurrentLexeme() {
+    Node* getCurrentLexeme() {
         int i = getCurrentPosition();
-        Lexeme lexeme = next();
+        Node* node = next();
+        setCurrentPosition(i);
+        return node;
+    }
+
+    Node* getNextLexeme() {
+        int i = getCurrentPosition();
+        next();
+        Node* lexeme = next();
         setCurrentPosition(i);
         return lexeme;
     }
 
-    Lexeme getNextLexeme() {
-        return this->nextLexeme;
-    }
-
-    Lexeme next();
+    Node* next();
 
     Scanner(const string text) {
         this->text = text;

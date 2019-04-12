@@ -1,7 +1,7 @@
 #ifndef DEFS_H
 #define DEFS_H
 
-enum Lexeme {
+enum TypeLexeme {
 
     // Ключевые слова
     IF,
