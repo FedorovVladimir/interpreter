@@ -1,7 +1,4 @@
 int a;
-int b = 0;
-int c = 1;
-double d = 1.1;
-double e = 1;
-double f = 1e2;
-double g = 1e-2;
+int b = 1;
+int c, d, e;
+double f = 1.1, g = 1, h = 1e3;

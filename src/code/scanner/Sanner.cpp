@@ -143,7 +143,7 @@ Node* Scanner::next() {
         s += text[currentPosition++];
         goto N2;
     }
-    return new Node(CONST_FLOAT, atof(s.c_str()));
+    return new Node(CONST_DOUBLE, atof(s.c_str()));
     N2:
     if (text[currentPosition] == '+' || text[currentPosition] == '-') {
         s += text[currentPosition++];
@@ -159,4 +159,8 @@ Node* Scanner::next() {
         s += text[currentPosition++];
     }
     return new Node(CONST_EXP, s);
+}
+
+TypeLexeme Scanner::getTypeLexem() {
+    return this->getCurrentNode()->getTypeLexem();
 }

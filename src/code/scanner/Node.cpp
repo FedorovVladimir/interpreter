@@ -25,7 +25,7 @@ string Node::toString() {
             break;
         case CONST_INT: s << "CONST_INT" << " " <<  valueInteger;
             break;
-        case CONST_FLOAT: s << "CONST_FLOAT" << " " << valueFloat;
+        case CONST_DOUBLE: s << "CONST_FLOAT" << " " << valueFloat;
             break;
         case CONST_EXP: s << "CONST_EXP" << " " << valueExp;
             break;

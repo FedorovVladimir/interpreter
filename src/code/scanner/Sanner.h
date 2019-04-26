@@ -47,6 +47,8 @@ public:
     Scanner(const string text) {
         this->text = text;
     }
+
+    TypeLexeme getTypeLexem();
 };
 
 #endif // SCANER_H
