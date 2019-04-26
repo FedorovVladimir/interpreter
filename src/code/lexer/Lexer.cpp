@@ -34,7 +34,6 @@ void Lexer::opisaniePeramennih() {
     scanner->next();
 
     do {
-
         if (scanner->getTypeLexem() == COMMA) {
             scanner->next();
         }
@@ -66,7 +65,13 @@ void Lexer::opisanieFunction() {
     if (scanner->getTypeLexem() != ID && scanner->getTypeLexem() != MAIN) {
         log("Ожидалася идентификатор");
     }
+    string name = scanner->getCurrentNode()->name;
+    if (scanner->getTypeLexem() == MAIN) {
+        name = "main";
+    }
     scanner->next();
+
+    addNode(new Node(FUNCTION, "", name));
 
     if (scanner->getTypeLexem() != OPEN_KRUGLAY_SKOBKA) {
         log("Ожидалася символ'('");
@@ -94,6 +99,7 @@ void Lexer::opisanieOperatora() {
     logPath("Описание оператора");
     if (scanner->getTypeLexem() == OPEN_FIGURNAY_SKOBKA) {
         scanner->next();
+        in();
 
         opisanieOperatorov();
 
@@ -101,6 +107,7 @@ void Lexer::opisanieOperatora() {
             log("Ожидалася символ'}'");
         }
         scanner->next();
+        out();
     }
 
     if (scanner->getTypeLexem() == INT || scanner->getTypeLexem() == DOUBLE) {
@@ -311,11 +318,6 @@ Node* Lexer::expession6() {
     }
 }
 
-void Lexer::addNode(Node *pNode) {
-    current->left = pNode;
-    current = current->left;
-}
-
 Node* Lexer::getVar(const string& name) {
     Node* p = current;
     do {
@@ -325,4 +327,26 @@ Node* Lexer::getVar(const string& name) {
         p = p->parent;
     } while (p->parent);
     return nullptr;
+}
+
+void Lexer::addNode(Node *pNode) {
+    current->left = pNode;
+    pNode->parent = current;
+    current = current->left;
+}
+
+void Lexer::in() {
+    current->right = new Node(EMPTY);
+    current->right->parent = current;
+    current = current->right;
+}
+
+void Lexer::out() {
+    Node* n = current;
+    while (n->right == nullptr) {
+        n = n->parent;
+    }
+    n->left = new Node(EMPTY);
+    n->left->parent = n;
+    current = n->left;
 }

@@ -87,6 +87,8 @@ string Node::toString() {
             break;
         case EMPTY: s << "EMPTY";
             break;
+        case FUNCTION: s << "FUNCTION" << " " << name;
+            break;
     }
     return s.str();
 }
@@ -96,11 +98,11 @@ void Node::display(int a) {
         cout << "    ";
     }
     cout << toString() << endl;
+    if (right != nullptr) {
+        right->display(a + 1);
+    }
     if (left != nullptr) {
         left->display(a);
-    }
-    if (right != nullptr) {
-        right->display();
     }
 }
 

@@ -62,7 +62,10 @@ enum TypeLexeme {
     ERROR,
 
     // пустой
-    EMPTY
+    EMPTY,
+
+    // функция
+    FUNCTION
 };
 
 #endif // DEFS_H

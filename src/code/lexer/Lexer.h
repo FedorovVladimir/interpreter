@@ -65,6 +65,10 @@ public:
     void addNode(Node *pNode);
 
     Node* getVar(const string& name);
+
+    void in();
+
+    void out();
 };
 
 
