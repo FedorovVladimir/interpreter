@@ -197,30 +197,14 @@ void Lexer::opisanieIf() {
 Node* Lexer::expession() {
     logPath("Обработка || &&");
 
-    Node* pNode = expession1();
+    Node* pNode = expession2();
     while (scanner->getTypeLexem() == OR_OR || scanner->getTypeLexem() == AND_AND) {
         TypeLexeme type = scanner->getTypeLexem();
         scanner->next();
         if (type == OR_OR) {
-            pNode = *pNode || *expession1();
+            pNode = *pNode || *expession2();
         } else {
-            pNode = *pNode && *expession1();
-        }
-    }
-    return pNode;
-}
-
-Node* Lexer::expession1() {
-    logPath("Обработка | &");
-
-    Node* pNode = expession2();
-    while (scanner->getTypeLexem() == OR || scanner->getTypeLexem() == AND) {
-        TypeLexeme type = scanner->getTypeLexem();
-        scanner->next();
-        if (type == OR) {
-            pNode = *pNode | *expession2();
-        } else {
-            pNode = *pNode & *expession2();
+            pNode = *pNode && *expession2();
         }
     }
     return pNode;
@@ -332,7 +316,7 @@ void Lexer::addNode(Node *pNode) {
     current = current->left;
 }
 
-Node* Lexer::getVar(string name) {
+Node* Lexer::getVar(const string& name) {
     Node* p = current;
     do {
         if (p->name == name) {

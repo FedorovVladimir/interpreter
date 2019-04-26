@@ -21,19 +21,20 @@ public:
     Node* parent = nullptr;
     Node* right = nullptr;
     Node* left = nullptr;
-    char* name;
+    char* name = "";
     union {
         double valueDouble;
-        double valueExp;
         int valueInteger;
     };
 
-    Node(TypeLexeme typeLexeme) {
+    explicit Node(TypeLexeme typeLexeme) {
         this->typeLexeme = typeLexeme;
+        this->valueDouble = 0;
     }
 
-    Node(TypeLexeme typeLexeme, string text, string name = "") {
+    Node(TypeLexeme typeLexeme, const string& text, const string& name = "") {
         this->typeLexeme = typeLexeme;
+        this->valueDouble = 0;
 
         char* value = new char[text.length() + 1];
         strcpy(value, text.c_str());
@@ -42,11 +43,11 @@ public:
         strcpy(this->name, name.c_str());
 
         if (typeLexeme == CONST_INT || typeLexeme == INT) {
-            valueInteger = atoi(text.c_str());
+            valueInteger = stoi(text);
         }
 
         if (typeLexeme == CONST_DOUBLE || typeLexeme == DOUBLE) {
-            valueDouble = atof(text.c_str());
+            valueDouble = stof(text);
         }
     }
 
@@ -62,8 +63,6 @@ public:
 
     friend Node *operator || (Node &n1, Node &n2);
     friend Node *operator && (Node &n1, Node &n2);
-    friend Node *operator | (Node &n1, Node &n2);
-    friend Node *operator & (Node &n1, Node &n2);
     friend Node *operator != (Node &n1, Node &n2);
     friend Node *operator == (Node &n1, Node &n2);
     friend Node *operator <= (Node &n1, Node &n2);
@@ -77,7 +76,7 @@ public:
 
     string getValue();
 
-    void setValue(string basicString);
+    void setValue(const string& basicString);
 };
 
 

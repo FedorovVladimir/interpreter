@@ -52,8 +52,6 @@ public:
 
     Node* expession();
 
-    Node* expession1();
-
     Node* expession2();
 
     Node* expession3();
@@ -66,7 +64,7 @@ public:
 
     void addNode(Node *pNode);
 
-    Node* getVar(string name);
+    Node* getVar(const string& name);
 };
 
 
