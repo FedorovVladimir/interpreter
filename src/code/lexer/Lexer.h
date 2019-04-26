@@ -40,6 +40,20 @@ public:
     void savePeramennoy();
 
     void opisanieIf();
+
+    void expession();
+
+    void expession1();
+
+    void expession2();
+
+    void expession3();
+
+    void expession4();
+
+    void expession5();
+
+    void expession6();
 };
 
 

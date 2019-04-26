@@ -44,10 +44,7 @@ void Lexer::opisaniePeramennih() {
 
         if (scanner->getTypeLexem() == SAVE) {
             scanner->next();
-            if (scanner->getTypeLexem() != CONST_INT && scanner->getTypeLexem() != CONST_DOUBLE && scanner->getTypeLexem() != CONST_EXP) {
-                log("Ожидалась константа");
-            }
-            scanner->next();
+            expession();
         }
     } while (scanner->getTypeLexem() == COMMA);
 }
@@ -149,12 +146,7 @@ void Lexer::savePeramennoy() {
     scanner->next();
     scanner->next();
 
-    // todo
-
-    if (scanner->getTypeLexem() != CONST_INT && scanner->getTypeLexem() != CONST_DOUBLE && scanner->getTypeLexem() != CONST_EXP) {
-        log("Ожидалась константа");
-    }
-    scanner->next();
+    expession();
 }
 
 void Lexer::opisanieIf() {
@@ -166,8 +158,7 @@ void Lexer::opisanieIf() {
     }
     scanner->next();
 
-    // todo
-    scanner->next();
+    expession();
 
     if (scanner->getTypeLexem() != CLOSE_KRUGLAY_SKOBKA) {
         log("Ожидалася символ')'");
@@ -179,5 +170,96 @@ void Lexer::opisanieIf() {
     if (scanner->getTypeLexem() == ELSE) {
         scanner->next();
         opisanieOperatora();
+    }
+}
+
+void Lexer::expession() {
+    logPath("Обработка || &&");
+
+    expession1();
+    while (scanner->getTypeLexem() == OR_OR || scanner->getTypeLexem() == AND_AND) {
+        scanner->next();
+        expession1();
+    }
+}
+
+void Lexer::expession1() {
+    logPath("Обработка | &");
+
+    expession2();
+    while (scanner->getTypeLexem() == OR || scanner->getTypeLexem() == AND) {
+        scanner->next();
+        expession2();
+    }
+}
+
+void Lexer::expession2() {
+    logPath("Обработка != ==");
+
+    expession3();
+    while (scanner->getTypeLexem() == NOT_EQUAL || scanner->getTypeLexem() == EQUAL) {
+        scanner->next();
+        expession3();
+    }
+}
+
+void Lexer::expession3() {
+    logPath("Обработка <= >= < >");
+
+    expession4();
+    while (scanner->getTypeLexem() == LARGER_EQUAL || scanner->getTypeLexem() == LESS_EQUAL || scanner->getTypeLexem() == LARGER || scanner->getTypeLexem() == LESS) {
+        scanner->next();
+        expession4();
+    }
+}
+
+void Lexer::expession4() {
+    logPath("Обработка + -");
+
+    expession5();
+    while (scanner->getTypeLexem() == PLUS || scanner->getTypeLexem() == MINUS) {
+        scanner->next();
+        expession5();
+    }
+}
+
+void Lexer::expession5() {
+    logPath("Обработка * /");
+
+    expession6();
+    while (scanner->getTypeLexem() == MUL || scanner->getTypeLexem() == DIV) {
+        scanner->next();
+        expession6();
+    }
+}
+
+void Lexer::expession6() {
+    logPath("Обработка простого выражения");
+
+    if (scanner->getTypeLexem() == CONST_INT) {
+        scanner->next();
+    }
+
+    if (scanner->getTypeLexem() == CONST_DOUBLE) {
+        scanner->next();
+    }
+
+    if (scanner->getTypeLexem() == CONST_EXP) {
+        scanner->next();
+    }
+
+    if (scanner->getTypeLexem() == ID) {
+        scanner->next();
+    }
+
+    if (scanner->getTypeLexem() == OPEN_KRUGLAY_SKOBKA) {
+        scanner->next();
+
+        expession();
+
+        if (scanner->getTypeLexem() != CLOSE_KRUGLAY_SKOBKA) {
+            log("Ожидался символ ')'");
+        }
+        scanner->next();
     }
 }
