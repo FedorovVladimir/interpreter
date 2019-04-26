@@ -31,7 +31,6 @@ public:
         this->typeLexeme = typeLexeme;
         this->valueInteger = 0;
         this->valueDouble = 0;
-        this->name = "";
     }
 
     Node(TypeLexeme typeLexeme, const string& text, const string& name = "") {

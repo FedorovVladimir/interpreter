@@ -106,11 +106,6 @@ void Node::display(int a) {
     }
 }
 
-void Node::add(Node *pNode) {
-    left = pNode;
-    pNode->parent = this;
-}
-
 Node *operator||(Node &n1, Node &n2) {
     TypeLexeme typeLexeme = CONST_INT;
     if (n1.getTypeLexem() == CONST_DOUBLE || n2.getTypeLexem() == CONST_DOUBLE) {

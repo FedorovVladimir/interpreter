@@ -26,6 +26,10 @@ public:
         exit(1);
     }
 
+    void logWarning(const string& text) {
+        cout << "Предупреждение: " << text << "." << endl;
+    }
+
     Node* getTree() {
         return node;
     }

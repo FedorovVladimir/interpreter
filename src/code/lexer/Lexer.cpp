@@ -54,6 +54,9 @@ void Lexer::opisaniePeramennih() {
                 value = to_string(pNode->valueInteger);
             }
         }
+        if (getVar(name)) {
+            logWarning("Переменная " + name + " уже была объявлена");
+        }
         addNode(new Node(type, value, name));
     } while (scanner->getTypeLexem() == COMMA);
 }
@@ -71,6 +74,9 @@ void Lexer::opisanieFunction() {
     }
     scanner->next();
 
+    if (getVar(name)) {
+        logWarning("Переменная " + name + " уже была объявлена");
+    }
     addNode(new Node(FUNCTION, "", name));
 
     if (scanner->getTypeLexem() != OPEN_KRUGLAY_SKOBKA) {
@@ -172,7 +178,9 @@ void Lexer::savePeramennoy() {
     scanner->next();
 
     Node* pNode = expession();
-    if (getVar(pNode->name)) {
+    if (!getVar(pNode->name)) {
+        log("Переменная не была объявлена");
+    } else {
         getVar(pNode->name)->setValue(pNode->getValue());
     }
 }
@@ -320,13 +328,13 @@ Node* Lexer::expession6() {
 
 Node* Lexer::getVar(const string& name) {
     Node* p = current;
-    do {
-        if (p->name == name) {
+    while (p) {
+        if (p->name && p->name == name) {
             return p;
         }
         p = p->parent;
-    } while (p->parent);
-    return nullptr;
+    }
+    return p;
 }
 
 void Lexer::addNode(Node *pNode) {
