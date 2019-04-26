@@ -21,7 +21,7 @@ public:
     Node* parent = nullptr;
     Node* right = nullptr;
     Node* left = nullptr;
-    char* name = "";
+    char* name;
     union {
         double valueDouble;
         int valueInteger;
@@ -29,7 +29,9 @@ public:
 
     explicit Node(TypeLexeme typeLexeme) {
         this->typeLexeme = typeLexeme;
+        this->valueInteger = 0;
         this->valueDouble = 0;
+        this->name = "";
     }
 
     Node(TypeLexeme typeLexeme, const string& text, const string& name = "") {
@@ -43,11 +45,11 @@ public:
         strcpy(this->name, name.c_str());
 
         if (typeLexeme == CONST_INT || typeLexeme == INT) {
-            valueInteger = stoi(text);
+            valueInteger = atoi(text.c_str());
         }
 
         if (typeLexeme == CONST_DOUBLE || typeLexeme == DOUBLE) {
-            valueDouble = stof(text);
+            valueDouble = atof(text.c_str());
         }
     }
 

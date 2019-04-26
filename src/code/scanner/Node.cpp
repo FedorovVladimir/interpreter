@@ -380,8 +380,8 @@ string Node::getValue() {
 
 void Node::setValue(const string& value) {
     if (typeLexeme == INT) {
-        valueInteger = stoi(value);
+        valueInteger = atoi(value.c_str());
     } else {
-        valueDouble = stof(value);
+        valueDouble = atof(value.c_str());
     }
 }
