@@ -27,19 +27,19 @@ public:
         return currentPosition;
     }
 
-    Node* getCurrentLexeme() {
+    Node* getCurrentNode() {
         int i = getCurrentPosition();
-        Node* node = next();
+        Node* pNode = next();
         setCurrentPosition(i);
-        return node;
+        return pNode;
     }
 
-    Node* getNextLexeme() {
+    Node* getNextNode() {
         int i = getCurrentPosition();
         next();
-        Node* lexeme = next();
+        Node* pNode = next();
         setCurrentPosition(i);
-        return lexeme;
+        return pNode;
     }
 
     Node* next();

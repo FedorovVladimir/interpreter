@@ -13,11 +13,12 @@ string readCode(string path) {
 }
 
 int main() {
-    string text = readCode("../src/resources/code.txt");
+    string text = readCode("../src/resources/testcode1.txt");
     Scanner* scanner = new Scanner(text);
-    while (scanner->getCurrentLexeme()->getTypeLexem() != END_OF_FILE) {
-        cout << scanner->getCurrentLexeme()->toString() << endl;
+    while (scanner->getCurrentNode()->getTypeLexem() != END_OF_FILE) {
+        cout << scanner->getCurrentNode()->toString() << endl;
         scanner->next();
     }
+    cout << scanner->getCurrentNode()->toString() << endl;
     return 0;
 }

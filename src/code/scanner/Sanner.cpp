@@ -39,12 +39,12 @@ void Scanner::swapComment() {
 }
 
 Node* Scanner::next() {
+    swapGarbageSymbols();
+    swapComment();
+
     if (currentPosition == text.length()) {
         return new Node(END_OF_FILE);
     }
-
-    swapGarbageSymbols();
-    swapComment();
 
     // , ; ( ) { } * % /
     int indexOneSymbols = oneSymbols.find(text[currentPosition]);
@@ -125,7 +125,7 @@ Node* Scanner::next() {
             s += text[currentPosition++];
             goto N2;
         }
-        return new Node(CONST_INT, s);
+        return new Node(CONST_INT, atoi(s.c_str()));
     }
     if (text[currentPosition] == '.') {
         s += text[currentPosition++];
@@ -143,7 +143,7 @@ Node* Scanner::next() {
         s += text[currentPosition++];
         goto N2;
     }
-    return new Node(CONST_FLOAT, s);
+    return new Node(CONST_FLOAT, atof(s.c_str()));
     N2:
     if (text[currentPosition] == '+' || text[currentPosition] == '-') {
         s += text[currentPosition++];
@@ -158,5 +158,5 @@ Node* Scanner::next() {
     while (isdigit(text[currentPosition])) {
         s += text[currentPosition++];
     }
-    return new Node(CONST_EXP);
+    return new Node(CONST_EXP, s);
 }

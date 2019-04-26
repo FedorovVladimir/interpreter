@@ -1,4 +1,4 @@
-double a1,b2,c2,d2,l3=d2;
+double a1 = 0,b2,c2,d2,l3=d2;
 
 int x;
  
