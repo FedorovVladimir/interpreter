@@ -30,9 +30,11 @@ void Lexer::opisanie() {
 
 void Lexer::opisaniePeramennih() {
     logPath("Описание переменных");
+    TypeLexeme type = scanner->getTypeLexem();
     scanner->next();
 
     do {
+
         if (scanner->getTypeLexem() == COMMA) {
             scanner->next();
         }
@@ -40,12 +42,16 @@ void Lexer::opisaniePeramennih() {
         if (scanner->getTypeLexem() != ID) {
             log("Ожидалася идентификатор");
         }
+        string name = scanner->getCurrentNode()->name;
         scanner->next();
 
+        string value = "";
         if (scanner->getTypeLexem() == SAVE) {
             scanner->next();
-            expession();
+            value = expession()->valueDouble;
         }
+
+        addNode(new Node(type, value, name));
     } while (scanner->getTypeLexem() == COMMA);
 }
 
@@ -75,7 +81,7 @@ void Lexer::opisanieFunction() {
 }
 
 void Lexer::logPath(string text) {
-    cout << text << endl;
+//    cout << text << endl;
 }
 
 void Lexer::opisanieOperatora() {
@@ -179,93 +185,146 @@ void Lexer::opisanieIf() {
     }
 }
 
-void Lexer::expession() {
+Node* Lexer::expession() {
     logPath("Обработка || &&");
+    TypeLexeme type = scanner->getTypeLexem();
 
-    expession1();
+    Node* node = expession1();
     while (scanner->getTypeLexem() == OR_OR || scanner->getTypeLexem() == AND_AND) {
         scanner->next();
-        expession1();
+        if (type == OR_OR) {
+            node = node || expession1();
+        } else {
+            node = node && expession1();
+        }
     }
+    return node;
 }
 
-void Lexer::expession1() {
+Node* Lexer::expession1() {
     logPath("Обработка | &");
+    TypeLexeme type = scanner->getTypeLexem();
 
-    expession2();
+    Node* node = expession2();
     while (scanner->getTypeLexem() == OR || scanner->getTypeLexem() == AND) {
         scanner->next();
-        expession2();
+        if (type == OR) {
+            node = node | expession2();
+        } else {
+            node = node & expession2();
+        }
     }
+    return node;
 }
 
-void Lexer::expession2() {
+Node* Lexer::expession2() {
     logPath("Обработка != ==");
+    TypeLexeme type = scanner->getTypeLexem();
 
-    expession3();
+    Node* node = expession3();
     while (scanner->getTypeLexem() == NOT_EQUAL || scanner->getTypeLexem() == EQUAL) {
         scanner->next();
-        expession3();
+        if (type == NOT_EQUAL) {
+            node = node != expession3();
+        } else {
+            node = node == expession3();
+        }
     }
+    return node;
 }
 
-void Lexer::expession3() {
+Node* Lexer::expession3() {
     logPath("Обработка <= >= < >");
+    TypeLexeme type = scanner->getTypeLexem();
 
-    expession4();
+    Node* node = expession4();
     while (scanner->getTypeLexem() == LARGER_EQUAL || scanner->getTypeLexem() == LESS_EQUAL || scanner->getTypeLexem() == LARGER || scanner->getTypeLexem() == LESS) {
         scanner->next();
-        expession4();
+        if (type == LARGER_EQUAL) {
+            node = node >= expession4();
+        } else if (type == LESS_EQUAL) {
+            node = node <= expession4();
+        } else if (type == LARGER) {
+            node = node > expession4();
+        } else {
+            node = node < expession4();
+        }
     }
+    return node;
 }
 
-void Lexer::expession4() {
+Node* Lexer::expession4() {
     logPath("Обработка + -");
+    TypeLexeme type = scanner->getTypeLexem();
 
-    expession5();
+    Node* node = expession5();
     while (scanner->getTypeLexem() == PLUS || scanner->getTypeLexem() == MINUS) {
         scanner->next();
-        expession5();
+        if (type == PLUS) {
+            node = node + expession5();
+        } else {
+            node = node - expession5();
+        }
     }
+    return node;
 }
 
-void Lexer::expession5() {
+Node* Lexer::expession5() {
     logPath("Обработка * /");
+    TypeLexeme type = scanner->getTypeLexem();
 
-    expession6();
+    Node* node = expession6();
     while (scanner->getTypeLexem() == MUL || scanner->getTypeLexem() == DIV) {
         scanner->next();
-        expession6();
+        if (type == MUL) {
+            node = node * expession5();
+        } else {
+            node = node / expession5();
+        }
     }
+    return node;
 }
 
-void Lexer::expession6() {
+Node* Lexer::expession6() {
     logPath("Обработка простого выражения");
 
     if (scanner->getTypeLexem() == CONST_INT) {
+        Node* node = scanner->getCurrentNode();
         scanner->next();
+        return node;
     }
 
     if (scanner->getTypeLexem() == CONST_DOUBLE) {
+        Node* node = scanner->getCurrentNode();
         scanner->next();
+        return node;
     }
 
     if (scanner->getTypeLexem() == CONST_EXP) {
+        Node* node = scanner->getCurrentNode();
         scanner->next();
+        return node;
     }
 
     if (scanner->getTypeLexem() == ID) {
+        // todo
         scanner->next();
     }
 
     if (scanner->getTypeLexem() == OPEN_KRUGLAY_SKOBKA) {
         scanner->next();
 
-        expession();
+        Node* node = expession();
 
         if (scanner->getTypeLexem() != CLOSE_KRUGLAY_SKOBKA) {
             log("Ожидался символ ')'");
         }
         scanner->next();
+        return node;
     }
+}
+
+void Lexer::addNode(Node *pNode) {
+    current->left = pNode;
+    current = current->left;
 }

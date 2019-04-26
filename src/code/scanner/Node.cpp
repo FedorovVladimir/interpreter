@@ -15,17 +15,17 @@ string Node::toString() {
             break;
         case VOID: s << "VOID";
             break;
-        case INT: s << "INT";
+        case INT: s << "INT" << " " << name;
             break;
-        case DOUBLE: s << "DOUBLE";
+        case DOUBLE: s << "DOUBLE" << " " << name;
             break;
         case MAIN: s << "MAIN";
             break;
-        case ID: s << "ID" << " " << valueText;
+        case ID: s << "ID" << " " << name;
             break;
         case CONST_INT: s << "CONST_INT" << " " <<  valueInteger;
             break;
-        case CONST_DOUBLE: s << "CONST_FLOAT" << " " << valueFloat;
+        case CONST_DOUBLE: s << "CONST_FLOAT" << " " << valueDouble;
             break;
         case CONST_EXP: s << "CONST_EXP" << " " << valueExp;
             break;
@@ -87,6 +87,26 @@ string Node::toString() {
             break;
         case ERROR: s << "ERROR";
             break;
+        case EMPTY: s << "EMPTY";
+            break;
     }
     return s.str();
+}
+
+void Node::display(int a) {
+    for (int i = 0; i < a; ++i) {
+        cout << "    ";
+    }
+    cout << toString() << endl;
+    if (left != nullptr) {
+        left->display(a);
+    }
+    if (right != nullptr) {
+        right->display();
+    }
+}
+
+void Node::add(Node *pNode) {
+    left = pNode;
+    pNode->parent = this;
 }

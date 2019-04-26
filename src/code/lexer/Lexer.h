@@ -7,21 +7,26 @@
 
 
 #include "../scanner/Sanner.h"
-#include "../tree/Tree.h"
 
 class Lexer {
 private:
     Scanner* scanner;
-    Tree* tree;
+    Node* node;
+    Node* current;
 public:
-    Lexer(Scanner *pScanner, Tree *pTree) {
+    Lexer(Scanner *pScanner) {
         this->scanner = pScanner;
-        this->tree = pTree;
+        this->node = new Node(EMPTY);
+        current = node;
     }
 
     void log(string text) {
         cout << "Ошибка: " << text << "." << endl;
         exit(1);
+    }
+
+    Node* getTree() {
+        return node;
     }
 
     void start();
@@ -44,19 +49,21 @@ public:
 
     void opisanieIf();
 
-    void expession();
+    Node* expession();
 
-    void expession1();
+    Node* expession1();
 
-    void expession2();
+    Node* expession2();
 
-    void expession3();
+    Node* expession3();
 
-    void expession4();
+    Node* expession4();
 
-    void expession5();
+    Node* expession5();
 
-    void expession6();
+    Node* expession6();
+
+    void addNode(Node *pNode);
 };
 
 

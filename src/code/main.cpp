@@ -14,10 +14,10 @@ string readCode(string path) {
 }
 
 int main() {
-    string text = readCode("../src/resources/code.txt");
+    string text = readCode("../src/resources/testcode1.txt");
     Scanner* scanner = new Scanner(text);
 
-//    вывод всех найденых токенов
+    // вывод всех найденых токенов
 //    while (scanner->getCurrentNode()->getTypeLexem() != END_OF_FILE) {
 //        cout << scanner->getCurrentNode()->toString() << endl;
 //        scanner->next();
@@ -25,9 +25,9 @@ int main() {
 //    cout << scanner->getCurrentNode()->toString() << endl;
 
     // разбор лексики
-    Tree* tree = new Tree();
-    Lexer* lexer = new Lexer(scanner, tree);
+    Lexer* lexer = new Lexer(scanner);
     lexer->start();
+    lexer->getTree()->display();
 
     return 0;
 }

@@ -17,38 +17,45 @@ using namespace std;
 class Node {
 private:
     TypeLexeme typeLexeme;
+public:
+    Node* parent = nullptr;
+    Node* right = nullptr;
+    Node* left = nullptr;
+    char* name;
     union {
-        char* valueText;
-        float valueFloat;
-        float valueExp;
+        double valueDouble;
+        double valueExp;
         int valueInteger;
     };
-public:
+
     Node(TypeLexeme typeLexeme) {
         this->typeLexeme = typeLexeme;
     }
 
-    Node(TypeLexeme typeLexeme, string text) {
+    Node(TypeLexeme typeLexeme, string text, string name = "") {
         this->typeLexeme = typeLexeme;
-        valueText = new char[text.length() + 1];
-        strcpy(valueText, text.c_str());
+
+        char* value = new char[text.length() + 1];
+        strcpy(value, text.c_str());
+
+        this->name = new char[name.length() + 1];
+        strcpy(this->name, name.c_str());
 
         if (typeLexeme == CONST_EXP) {
-            char * s = strtok(valueText, "Ee");
-            valueFloat = atof(s);
-            s = strtok(NULL, "Ee");
-            valueFloat *= pow(10, atoi(s));
+            char * s = strtok(value, "Ee");
+            valueDouble = atof(s);
+            s = strtok(nullptr, "Ee");
+            valueDouble *= pow(10, atoi(s));
         }
-    }
 
-    Node(TypeLexeme typeLexeme, double d) {
-        this->typeLexeme = typeLexeme;
-        this->valueFloat = d;
-    }
+        if (typeLexeme == CONST_INT) {
+            valueInteger = atoi(text.c_str());
+        }
 
-    Node(TypeLexeme typeLexeme, int i) {
-        this->typeLexeme = typeLexeme;
-        this->valueInteger = i;
+        if (typeLexeme == CONST_DOUBLE) {
+            valueDouble = atof(text.c_str());
+        }
+
     }
 
     TypeLexeme getTypeLexem() {
@@ -56,6 +63,10 @@ public:
     }
 
     string toString();
+
+    void display(int a = 0);
+
+    void add(Node *pNode);
 };
 
 

@@ -105,7 +105,7 @@ Node* Scanner::next() {
                 return new Node(lexemeWord[i]);
             }
         }
-        return new Node(ID, s);
+        return new Node(ID, "", s);
     }
 
     if (!isdigit(text[currentPosition]) && text[currentPosition] != '.') {
@@ -125,7 +125,7 @@ Node* Scanner::next() {
             s += text[currentPosition++];
             goto N2;
         }
-        return new Node(CONST_INT, atoi(s.c_str()));
+        return new Node(CONST_INT, s);
     }
     if (text[currentPosition] == '.') {
         s += text[currentPosition++];
@@ -143,7 +143,7 @@ Node* Scanner::next() {
         s += text[currentPosition++];
         goto N2;
     }
-    return new Node(CONST_DOUBLE, atof(s.c_str()));
+    return new Node(CONST_DOUBLE, s);
     N2:
     if (text[currentPosition] == '+' || text[currentPosition] == '-') {
         s += text[currentPosition++];

@@ -60,7 +60,10 @@ enum TypeLexeme {
     END_OF_FILE,
 
     // Ошибочный символ
-    ERROR
+    ERROR,
+
+    // пустой
+    EMPTY
 };
 
 #endif // DEFS_H
