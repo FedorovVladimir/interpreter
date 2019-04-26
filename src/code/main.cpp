@@ -14,7 +14,7 @@ string readCode(string path) {
 }
 
 int main() {
-    string text = readCode("../src/resources/testcode2.txt");
+    string text = readCode("../src/resources/testcode3.txt");
     Scanner* scanner = new Scanner(text);
 
     // вывод всех найденых токенов

@@ -7,7 +7,7 @@ int main1;
 
 
 
-void main ()   
+void main ()
 {
 	int ext;
 	int mainchik;
@@ -15,20 +15,20 @@ void main ()
 	main();
 	a&&b;
 	int text1;
-		
+
 	{
 		{
 			{
 				int sdsd;
-				text1 = 1; {{{{{{int text =2;} int text=9 & 90 && 78; }}}}}
+				text1 = 1; {{{{{{int text =2;} int text=9 && 90 && 78; }}}}}
 				ext = text1 + 245;
 			}
 		}
-	}	
+	}
 	if (1)
 	{
 		int f;
-		
+
 	}
 	else if(a1)
         {

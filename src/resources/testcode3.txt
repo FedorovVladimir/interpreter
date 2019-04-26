@@ -1,0 +1,53 @@
+double a1 = 0,b2,c2,d2,l3=d2;
+
+int x;
+
+int d = 2;
+int main1;
+
+void main ()
+{
+    int ext;
+	int mainchik;
+	double ddddd;
+	main();
+	int text1;
+
+    if(1)
+        double rrrrr;
+	{
+        {
+            {
+                int sdsd;
+                text1 = 1; {{{{{{int text =2;} int text=9 && 90 && 78; }}}}}
+                ext = text1 + 245;
+            }
+        }
+    }
+    if (1)
+        {
+            int f;
+
+        }
+        else if(a1)
+            {
+            double e = 1;
+        }
+        else
+            double b;
+        double dddd = d + 09 * a1;
+        a1 = 1;
+        int aaa = .1111111e-1 * d / d + 222222222222 + 5.;
+}
+void main12()
+{
+	main();
+	main12();
+	main();
+	//a();
+}
+
+void a()
+{
+	int b;
+}

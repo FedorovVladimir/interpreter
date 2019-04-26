@@ -21,7 +21,7 @@ public:
     Node* parent = nullptr;
     Node* right = nullptr;
     Node* left = nullptr;
-    char* name;
+    char* name = "";
     union {
         double valueDouble;
         int valueInteger;

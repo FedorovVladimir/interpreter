@@ -44,7 +44,7 @@ void Lexer::opisaniePeramennih() {
         string name = scanner->getCurrentNode()->name;
         scanner->next();
 
-        string value;
+        string value = "0";
         if (scanner->getTypeLexem() == SAVE) {
             scanner->next();
             Node* pNode = expession();
@@ -54,10 +54,12 @@ void Lexer::opisaniePeramennih() {
                 value = to_string(pNode->valueInteger);
             }
         }
+
         if (getVar(name)) {
             logWarning("Переменная " + name + " уже была объявлена");
+        } else {
+            addNode(new Node(type, value, name));
         }
-        addNode(new Node(type, value, name));
     } while (scanner->getTypeLexem() == COMMA);
 }
 
@@ -149,10 +151,6 @@ void Lexer::opisanieOperatora() {
     if (scanner->getTypeLexem() == POINT_COMMA) {
         scanner->next();
     }
-
-    if (scanner->getTypeLexem() == CONST_INT || scanner->getTypeLexem() == CONST_DOUBLE) {
-        expession();
-    }
 }
 
 void Lexer::opisanieOperatorov() {
@@ -201,11 +199,15 @@ void Lexer::opisanieIf() {
     }
     scanner->next();
 
+    in();
     opisanieOperatora();
+    out();
 
     if (scanner->getTypeLexem() == ELSE) {
         scanner->next();
+        in();
         opisanieOperatora();
+        out();
     }
 }
 
@@ -341,7 +343,7 @@ Node* Lexer::expession6() {
 Node* Lexer::getVar(const string& name) {
     Node* p = current;
     while (p) {
-        if (p->name && p->name == name) {
+        if (p->name == name) {
             return p;
         }
         p = p->parent;
@@ -365,4 +367,7 @@ void Lexer::in() {
 void Lexer::out() {
     current = listok->front();
     listok->pop_front();
+    current->left = new Node(EMPTY);
+    current->left->parent = current;
+    current = current->left;
 }
