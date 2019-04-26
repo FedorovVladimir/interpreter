@@ -100,13 +100,15 @@ void Lexer::opisanieOperatora() {
         scanner->next();
     }
 
-    if (scanner->getTypeLexem() == ID) {
+    if (scanner->getTypeLexem() == ID || scanner->getTypeLexem() == MAIN) {
         if (scanner->getNextNode()->getTypeLexem() == OPEN_KRUGLAY_SKOBKA) {
             vizovFunction();
         }
 
         if (scanner->getNextNode()->getTypeLexem() == SAVE) {
             savePeramennoy();
+        } else {
+            expession();
         }
 
         if (scanner->getTypeLexem() != POINT_COMMA) {
@@ -121,6 +123,10 @@ void Lexer::opisanieOperatora() {
 
     if (scanner->getTypeLexem() == POINT_COMMA) {
         scanner->next();
+    }
+
+    if (scanner->getTypeLexem() == CONST_INT || scanner->getTypeLexem() == CONST_DOUBLE || scanner->getTypeLexem() == CONST_EXP) {
+        expession();
     }
 }
 

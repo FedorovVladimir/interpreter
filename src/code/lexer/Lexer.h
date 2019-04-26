@@ -7,13 +7,16 @@
 
 
 #include "../scanner/Sanner.h"
+#include "../tree/Tree.h"
 
 class Lexer {
 private:
     Scanner* scanner;
+    Tree* tree;
 public:
-    Lexer(Scanner *pScanner) {
+    Lexer(Scanner *pScanner, Tree *pTree) {
         this->scanner = pScanner;
+        this->tree = pTree;
     }
 
     void log(string text) {
