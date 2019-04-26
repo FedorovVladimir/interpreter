@@ -28,6 +28,16 @@ public:
     void opisaniePeramennih();
 
     void logPath(string text);
+
+    void opisanieFunction();
+
+    void opisanieBloka();
+
+    void opisanieOperatorov();
+
+    void vizovFunction();
+
+    void savePeramennoy();
 };
 
 

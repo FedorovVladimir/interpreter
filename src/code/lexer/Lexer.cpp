@@ -18,9 +18,13 @@ void Lexer::start() {
 void Lexer::opisanie() {
     logPath("Описание");
     if (scanner->getTypeLexem() == VOID) {
-//        function();
+        opisanieFunction();
     } else {
         opisaniePeramennih();
+        if (scanner->getTypeLexem() != POINT_COMMA) {
+            log("Ожидалась точька с запятой");
+        }
+        scanner->next();
     }
 }
 
@@ -46,13 +50,92 @@ void Lexer::opisaniePeramennih() {
             scanner->next();
         }
     } while (scanner->getTypeLexem() == COMMA);
+}
 
-    if (scanner->getTypeLexem() != POINT_COMMA) {
-        log("Ожидалась точька с запятой");
+void Lexer::opisanieFunction() {
+    logPath("Описание функции");
+    scanner->next();
+
+    if (scanner->getTypeLexem() != ID && scanner->getTypeLexem() != MAIN) {
+        log("Ожидалася идентификатор");
     }
     scanner->next();
+
+    if (scanner->getTypeLexem() != OPEN_KRUGLAY_SKOBKA) {
+        log("Ожидалася символ'('");
+    }
+    scanner->next();
+
+    if (scanner->getTypeLexem() != CLOSE_KRUGLAY_SKOBKA) {
+        log("Ожидалася символ')'");
+    }
+    scanner->next();
+
+    if (scanner->getTypeLexem() != OPEN_FIGURNAY_SKOBKA) {
+        log("Ожидалася символ'{'");
+    }
+    opisanieBloka();
 }
 
 void Lexer::logPath(string text) {
     cout << text << endl;
+}
+
+void Lexer::opisanieBloka() {
+    logPath("Описание блока");
+    if (scanner->getTypeLexem() == OPEN_FIGURNAY_SKOBKA) {
+        scanner->next();
+
+        opisanieOperatorov();
+    }
+    if (scanner->getTypeLexem() != CLOSE_FIGURNAY_SKOBKA) {
+        log("Ожидалася символ'}'");
+    }
+    scanner->next();
+}
+
+void Lexer::opisanieOperatorov() {
+    logPath("Описание операторов");
+
+    while (scanner->getTypeLexem() != CLOSE_FIGURNAY_SKOBKA) {
+        if (scanner->getTypeLexem() == INT || scanner->getTypeLexem() == DOUBLE) {
+            opisaniePeramennih();
+        }
+
+        if (scanner->getTypeLexem() == ID) {
+            if (scanner->getNextNode()->getTypeLexem() == OPEN_KRUGLAY_SKOBKA) {
+                vizovFunction();
+            }
+
+            if (scanner->getNextNode()->getTypeLexem() == SAVE) {
+                savePeramennoy();
+            }
+        }
+        if (scanner->getTypeLexem() != POINT_COMMA) {
+            log("Ожидалась точька с запятой");
+        }
+        scanner->next();
+    }
+}
+
+void Lexer::vizovFunction() {
+    logPath("Вызов функции");
+
+    scanner->next();
+    scanner->next();
+    scanner->next();
+}
+
+void Lexer::savePeramennoy() {
+    logPath("Присваивание переменной");
+
+    scanner->next();
+    scanner->next();
+
+    // todo
+
+    if (scanner->getTypeLexem() != CONST_INT && scanner->getTypeLexem() != CONST_DOUBLE && scanner->getTypeLexem() != CONST_EXP) {
+        log("Ожидалась константа");
+    }
+    scanner->next();
 }
