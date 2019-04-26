@@ -17,7 +17,6 @@ enum TypeLexeme {
     // Константы
     CONST_INT,
     CONST_DOUBLE,
-    CONST_EXP,
 
     // Знаки арифметических операций
     PLUS,

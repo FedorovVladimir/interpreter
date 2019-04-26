@@ -27,8 +27,6 @@ string Node::toString() {
             break;
         case CONST_DOUBLE: s << "CONST_FLOAT" << " " << valueDouble;
             break;
-        case CONST_EXP: s << "CONST_EXP" << " " << valueExp;
-            break;
         case PLUS: s << "PLUS";
             break;
         case MINUS: s << "MINUS";
@@ -109,4 +107,60 @@ void Node::display(int a) {
 void Node::add(Node *pNode) {
     left = pNode;
     pNode->parent = this;
+}
+
+Node *operator||(Node &n1, Node &n2) {
+    return &n1;
+}
+
+Node *operator&&(Node &n1, Node &n2) {
+    return &n1;
+}
+
+Node *operator|(Node &n1, Node &n2) {
+    return &n1;
+}
+
+Node *operator&(Node &n1, Node &n2) {
+    return &n1;
+}
+
+Node *operator!=(Node &n1, Node &n2) {
+    return &n1;
+}
+
+Node *operator==(Node &n1, Node &n2) {
+    return &n1;
+}
+
+Node *operator<=(Node &n1, Node &n2) {
+    return &n1;
+}
+
+Node *operator>=(Node &n1, Node &n2) {
+    return &n1;
+}
+
+Node *operator<(Node &n1, Node &n2) {
+    return &n1;
+}
+
+Node *operator>(Node &n1, Node &n2) {
+    return &n1;
+}
+
+Node *operator+(Node &n1, Node &n2) {
+    return &n1;
+}
+
+Node *operator-(Node &n1, Node &n2) {
+    return &n1;
+}
+
+Node *operator*(Node &n1, Node &n2) {
+    return &n1;
+}
+
+Node *operator/(Node &n1, Node &n2) {
+    return &n1;
 }

@@ -158,7 +158,14 @@ Node* Scanner::next() {
     while (isdigit(text[currentPosition])) {
         s += text[currentPosition++];
     }
-    return new Node(CONST_EXP, s);
+
+    char* value = new char[s.length() + 1];
+    strcpy(value, s.c_str());
+    char * str = strtok(value, "Ee");
+    double valueDouble = atof(str);
+    s = strtok(nullptr, "Ee");
+    valueDouble *= pow(10, atoi(str));
+    return new Node(CONST_DOUBLE, to_string(valueDouble));
 }
 
 TypeLexeme Scanner::getTypeLexem() {

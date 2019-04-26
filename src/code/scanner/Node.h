@@ -41,13 +41,6 @@ public:
         this->name = new char[name.length() + 1];
         strcpy(this->name, name.c_str());
 
-        if (typeLexeme == CONST_EXP) {
-            char * s = strtok(value, "Ee");
-            valueDouble = atof(s);
-            s = strtok(nullptr, "Ee");
-            valueDouble *= pow(10, atoi(s));
-        }
-
         if (typeLexeme == CONST_INT) {
             valueInteger = atoi(text.c_str());
         }
@@ -55,7 +48,6 @@ public:
         if (typeLexeme == CONST_DOUBLE) {
             valueDouble = atof(text.c_str());
         }
-
     }
 
     TypeLexeme getTypeLexem() {
@@ -67,6 +59,21 @@ public:
     void display(int a = 0);
 
     void add(Node *pNode);
+
+    friend Node *operator || (Node &n1, Node &n2);
+    friend Node *operator && (Node &n1, Node &n2);
+    friend Node *operator | (Node &n1, Node &n2);
+    friend Node *operator & (Node &n1, Node &n2);
+    friend Node *operator != (Node &n1, Node &n2);
+    friend Node *operator == (Node &n1, Node &n2);
+    friend Node *operator <= (Node &n1, Node &n2);
+    friend Node *operator >= (Node &n1, Node &n2);
+    friend Node *operator < (Node &n1, Node &n2);
+    friend Node *operator > (Node &n1, Node &n2);
+    friend Node *operator + (Node &n1, Node &n2);
+    friend Node *operator - (Node &n1, Node &n2);
+    friend Node *operator * (Node &n1, Node &n2);
+    friend Node *operator / (Node &n1, Node &n2);
 };
 
 

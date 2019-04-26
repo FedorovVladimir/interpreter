@@ -131,7 +131,7 @@ void Lexer::opisanieOperatora() {
         scanner->next();
     }
 
-    if (scanner->getTypeLexem() == CONST_INT || scanner->getTypeLexem() == CONST_DOUBLE || scanner->getTypeLexem() == CONST_EXP) {
+    if (scanner->getTypeLexem() == CONST_INT || scanner->getTypeLexem() == CONST_DOUBLE) {
         expession();
     }
 }
@@ -193,9 +193,9 @@ Node* Lexer::expession() {
     while (scanner->getTypeLexem() == OR_OR || scanner->getTypeLexem() == AND_AND) {
         scanner->next();
         if (type == OR_OR) {
-            node = node || expession1();
+            node = *node || *expession1();
         } else {
-            node = node && expession1();
+            node = *node && *expession1();
         }
     }
     return node;
@@ -209,9 +209,9 @@ Node* Lexer::expession1() {
     while (scanner->getTypeLexem() == OR || scanner->getTypeLexem() == AND) {
         scanner->next();
         if (type == OR) {
-            node = node | expession2();
+            node = *node | *expession2();
         } else {
-            node = node & expession2();
+            node = *node & *expession2();
         }
     }
     return node;
@@ -225,9 +225,9 @@ Node* Lexer::expession2() {
     while (scanner->getTypeLexem() == NOT_EQUAL || scanner->getTypeLexem() == EQUAL) {
         scanner->next();
         if (type == NOT_EQUAL) {
-            node = node != expession3();
+            node = *node != *expession3();
         } else {
-            node = node == expession3();
+            node = *node == *expession3();
         }
     }
     return node;
@@ -241,13 +241,13 @@ Node* Lexer::expession3() {
     while (scanner->getTypeLexem() == LARGER_EQUAL || scanner->getTypeLexem() == LESS_EQUAL || scanner->getTypeLexem() == LARGER || scanner->getTypeLexem() == LESS) {
         scanner->next();
         if (type == LARGER_EQUAL) {
-            node = node >= expession4();
+            node = *node >= *expession4();
         } else if (type == LESS_EQUAL) {
-            node = node <= expession4();
+            node = *node <= *expession4();
         } else if (type == LARGER) {
-            node = node > expession4();
+            node = *node > *expession4();
         } else {
-            node = node < expession4();
+            node = *node < *expession4();
         }
     }
     return node;
@@ -261,9 +261,9 @@ Node* Lexer::expession4() {
     while (scanner->getTypeLexem() == PLUS || scanner->getTypeLexem() == MINUS) {
         scanner->next();
         if (type == PLUS) {
-            node = node + expession5();
+            node = *node + *expession5();
         } else {
-            node = node - expession5();
+            node = *node - *expession5();
         }
     }
     return node;
@@ -277,9 +277,9 @@ Node* Lexer::expession5() {
     while (scanner->getTypeLexem() == MUL || scanner->getTypeLexem() == DIV) {
         scanner->next();
         if (type == MUL) {
-            node = node * expession5();
+            node = *node * *expession5();
         } else {
-            node = node / expession5();
+            node = *node / *expession5();
         }
     }
     return node;
@@ -295,12 +295,6 @@ Node* Lexer::expession6() {
     }
 
     if (scanner->getTypeLexem() == CONST_DOUBLE) {
-        Node* node = scanner->getCurrentNode();
-        scanner->next();
-        return node;
-    }
-
-    if (scanner->getTypeLexem() == CONST_EXP) {
         Node* node = scanner->getCurrentNode();
         scanner->next();
         return node;
