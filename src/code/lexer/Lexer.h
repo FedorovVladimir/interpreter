@@ -7,10 +7,12 @@
 
 
 #include "../scanner/Sanner.h"
+#include <list>
 
 class Lexer {
 private:
     Scanner* scanner;
+    list<Node *> *listok = new list<Node*>();
     bool debug = false;
     Node* node;
     Node* current;

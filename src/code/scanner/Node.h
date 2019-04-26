@@ -60,8 +60,6 @@ public:
 
     void display(int a = 0);
 
-    void add(Node *pNode);
-
     friend Node *operator || (Node &n1, Node &n2);
     friend Node *operator && (Node &n1, Node &n2);
     friend Node *operator != (Node &n1, Node &n2);

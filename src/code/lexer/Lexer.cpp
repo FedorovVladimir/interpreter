@@ -344,17 +344,13 @@ void Lexer::addNode(Node *pNode) {
 }
 
 void Lexer::in() {
+    listok->push_front(current);
     current->right = new Node(EMPTY);
     current->right->parent = current;
     current = current->right;
 }
 
 void Lexer::out() {
-    Node* n = current;
-    while (n->right == nullptr) {
-        n = n->parent;
-    }
-    n->left = new Node(EMPTY);
-    n->left->parent = n;
-    current = n->left;
+    current = listok->front();
+    listok->pop_front();
 }
