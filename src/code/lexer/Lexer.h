@@ -31,13 +31,15 @@ public:
 
     void opisanieFunction();
 
-    void opisanieBloka();
+    void opisanieOperatora();
 
     void opisanieOperatorov();
 
     void vizovFunction();
 
     void savePeramennoy();
+
+    void opisanieIf();
 };
 
 
