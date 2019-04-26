@@ -309,8 +309,20 @@ Node* Lexer::expession6() {
     }
 
     if (scanner->getTypeLexem() == ID) {
-        // todo
+        string name = scanner->getCurrentNode()->name;
         scanner->next();
+        Node* pNode = getVar(name);
+        TypeLexeme typeLexeme = CONST_INT;
+        if (pNode->getTypeLexem() == CONST_DOUBLE) {
+            typeLexeme = CONST_DOUBLE;
+        }
+        double value;
+        if (pNode->getTypeLexem() == CONST_DOUBLE) {
+            value = pNode->valueDouble;
+        } else {
+            value = pNode->valueInteger;
+        }
+        return new Node(typeLexeme, to_string(value), "");
     }
 
     if (scanner->getTypeLexem() == OPEN_KRUGLAY_SKOBKA) {
