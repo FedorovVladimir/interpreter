@@ -11,16 +11,17 @@
 class Lexer {
 private:
     Scanner* scanner;
+    bool debug = false;
     Node* node;
     Node* current;
 public:
-    Lexer(Scanner *pScanner) {
+    explicit Lexer(Scanner *pScanner) {
         this->scanner = pScanner;
         this->node = new Node(EMPTY);
         current = node;
     }
 
-    void log(string text) {
+    void log(const string& text) {
         cout << "Ошибка: " << text << "." << endl;
         exit(1);
     }
@@ -35,7 +36,7 @@ public:
 
     void opisaniePeramennih();
 
-    void logPath(string text);
+    void logPath(const string& text);
 
     void opisanieFunction();
 
