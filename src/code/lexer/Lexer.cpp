@@ -55,7 +55,6 @@ void Lexer::opisaniePeramennih() {
                 value = to_string(pNode->valueInteger);
             }
         }
-
         addNode(new Node(type, value, name));
     } while (scanner->getTypeLexem() == COMMA);
 }
@@ -165,7 +164,10 @@ void Lexer::savePeramennoy() {
     scanner->next();
     scanner->next();
 
-    expession();
+    Node* pNode = expession();
+    if (getVar(pNode->name)) {
+        getVar(pNode->name)->setValue(pNode->getValue());
+    }
 }
 
 void Lexer::opisanieIf() {
@@ -194,10 +196,10 @@ void Lexer::opisanieIf() {
 
 Node* Lexer::expession() {
     logPath("Обработка || &&");
-    TypeLexeme type = scanner->getTypeLexem();
 
     Node* pNode = expession1();
     while (scanner->getTypeLexem() == OR_OR || scanner->getTypeLexem() == AND_AND) {
+        TypeLexeme type = scanner->getTypeLexem();
         scanner->next();
         if (type == OR_OR) {
             pNode = *pNode || *expession1();
@@ -210,10 +212,10 @@ Node* Lexer::expession() {
 
 Node* Lexer::expession1() {
     logPath("Обработка | &");
-    TypeLexeme type = scanner->getTypeLexem();
 
     Node* pNode = expession2();
     while (scanner->getTypeLexem() == OR || scanner->getTypeLexem() == AND) {
+        TypeLexeme type = scanner->getTypeLexem();
         scanner->next();
         if (type == OR) {
             pNode = *pNode | *expession2();
@@ -226,10 +228,10 @@ Node* Lexer::expession1() {
 
 Node* Lexer::expession2() {
     logPath("Обработка != ==");
-    TypeLexeme type = scanner->getTypeLexem();
 
     Node* pNode = expession3();
     while (scanner->getTypeLexem() == NOT_EQUAL || scanner->getTypeLexem() == EQUAL) {
+        TypeLexeme type = scanner->getTypeLexem();
         scanner->next();
         if (type == NOT_EQUAL) {
             pNode = *pNode != *expession3();
@@ -242,10 +244,10 @@ Node* Lexer::expession2() {
 
 Node* Lexer::expession3() {
     logPath("Обработка <= >= < >");
-    TypeLexeme type = scanner->getTypeLexem();
 
     Node* pNode = expession4();
     while (scanner->getTypeLexem() == LARGER_EQUAL || scanner->getTypeLexem() == LESS_EQUAL || scanner->getTypeLexem() == LARGER || scanner->getTypeLexem() == LESS) {
+        TypeLexeme type = scanner->getTypeLexem();
         scanner->next();
         if (type == LARGER_EQUAL) {
             pNode = *pNode >= *expession4();
@@ -262,10 +264,10 @@ Node* Lexer::expession3() {
 
 Node* Lexer::expession4() {
     logPath("Обработка + -");
-    TypeLexeme type = scanner->getTypeLexem();
 
     Node* pNode = expession5();
     while (scanner->getTypeLexem() == PLUS || scanner->getTypeLexem() == MINUS) {
+        TypeLexeme type = scanner->getTypeLexem();
         scanner->next();
         if (type == PLUS) {
             pNode = *pNode + *expession5();
@@ -278,10 +280,10 @@ Node* Lexer::expession4() {
 
 Node* Lexer::expession5() {
     logPath("Обработка * /");
-    TypeLexeme type = scanner->getTypeLexem();
 
     Node* pNode = expession6();
     while (scanner->getTypeLexem() == MUL || scanner->getTypeLexem() == DIV) {
+        TypeLexeme type = scanner->getTypeLexem();
         scanner->next();
         if (type == MUL) {
             pNode = *pNode * *expession5();
@@ -328,4 +330,15 @@ Node* Lexer::expession6() {
 void Lexer::addNode(Node *pNode) {
     current->left = pNode;
     current = current->left;
+}
+
+Node* Lexer::getVar(string name) {
+    Node* p = current;
+    do {
+        if (p->name == name) {
+            return p;
+        }
+        p = p->parent;
+    } while (p->parent);
+    return nullptr;
 }

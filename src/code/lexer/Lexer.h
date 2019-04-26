@@ -65,6 +65,8 @@ public:
     Node* expession6();
 
     void addNode(Node *pNode);
+
+    Node* getVar(string name);
 };
 
 

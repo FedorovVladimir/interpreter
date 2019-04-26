@@ -15,9 +15,9 @@ string Node::toString() {
             break;
         case VOID: s << "VOID";
             break;
-        case INT: s << "INT" << " " << name;
+        case INT: s << "INT" << " " << name << " " << valueInteger;
             break;
-        case DOUBLE: s << "DOUBLE" << " " << name;
+        case DOUBLE: s << "DOUBLE" << " " << name << " " << valueDouble;
             break;
         case MAIN: s << "MAIN";
             break;
@@ -150,17 +150,101 @@ Node *operator>(Node &n1, Node &n2) {
 }
 
 Node *operator+(Node &n1, Node &n2) {
-    return &n1;
+    TypeLexeme typeLexeme = CONST_INT;
+    if (n1.getTypeLexem() == CONST_DOUBLE || n2.getTypeLexem() == CONST_DOUBLE) {
+        typeLexeme = CONST_DOUBLE;
+    }
+    double value;
+
+    if (n1.getTypeLexem() == CONST_INT) {
+        value = n1.valueInteger;
+    } else {
+        value = n1.valueDouble;
+    }
+
+    if (n2.getTypeLexem() == CONST_INT) {
+        value += n2.valueInteger;
+    } else {
+        value += n2.valueDouble;
+    }
+    return new Node(typeLexeme, to_string(value), "");
 }
 
 Node *operator-(Node &n1, Node &n2) {
-    return &n1;
+    TypeLexeme typeLexeme = CONST_INT;
+    if (n1.getTypeLexem() == CONST_DOUBLE || n2.getTypeLexem() == CONST_DOUBLE) {
+        typeLexeme = CONST_DOUBLE;
+    }
+    double value;
+
+    if (n1.getTypeLexem() == CONST_INT) {
+        value = n1.valueInteger;
+    } else {
+        value = n1.valueDouble;
+    }
+
+    if (n2.getTypeLexem() == CONST_INT) {
+        value -= n2.valueInteger;
+    } else {
+        value -= n2.valueDouble;
+    }
+    return new Node(typeLexeme, to_string(value), "");
 }
 
 Node *operator*(Node &n1, Node &n2) {
-    return &n1;
+    TypeLexeme typeLexeme = CONST_INT;
+    if (n1.getTypeLexem() == CONST_DOUBLE || n2.getTypeLexem() == CONST_DOUBLE) {
+        typeLexeme = CONST_DOUBLE;
+    }
+    double value;
+
+    if (n1.getTypeLexem() == CONST_INT) {
+        value = n1.valueInteger;
+    } else {
+        value = n1.valueDouble;
+    }
+
+    if (n2.getTypeLexem() == CONST_INT) {
+        value *= n2.valueInteger;
+    } else {
+        value *= n2.valueDouble;
+    }
+    return new Node(typeLexeme, to_string(value), "");
 }
 
 Node *operator/(Node &n1, Node &n2) {
-    return &n1;
+    TypeLexeme typeLexeme = CONST_INT;
+    if (n1.getTypeLexem() == CONST_DOUBLE || n2.getTypeLexem() == CONST_DOUBLE) {
+        typeLexeme = CONST_DOUBLE;
+    }
+    double value;
+
+    if (n1.getTypeLexem() == CONST_INT) {
+        value = n1.valueInteger;
+    } else {
+        value = n1.valueDouble;
+    }
+
+    if (n2.getTypeLexem() == CONST_INT) {
+        value /= n2.valueInteger;
+    } else {
+        value /= n2.valueDouble;
+    }
+    return new Node(typeLexeme, to_string(value), "");
+}
+
+string Node::getValue() {
+    if (typeLexeme == CONST_INT) {
+        return to_string(valueInteger);
+    } else {
+        return to_string(valueDouble);
+    }
+}
+
+void Node::setValue(string value) {
+    if (typeLexeme == INT) {
+        valueInteger = atoi(value.c_str());
+    } else {
+        valueDouble = atof(value.c_str());
+    }
 }

@@ -41,11 +41,11 @@ public:
         this->name = new char[name.length() + 1];
         strcpy(this->name, name.c_str());
 
-        if (typeLexeme == CONST_INT) {
+        if (typeLexeme == CONST_INT || typeLexeme == INT) {
             valueInteger = atoi(text.c_str());
         }
 
-        if (typeLexeme == CONST_DOUBLE) {
+        if (typeLexeme == CONST_DOUBLE || typeLexeme == DOUBLE) {
             valueDouble = atof(text.c_str());
         }
     }
@@ -74,6 +74,10 @@ public:
     friend Node *operator - (Node &n1, Node &n2);
     friend Node *operator * (Node &n1, Node &n2);
     friend Node *operator / (Node &n1, Node &n2);
+
+    string getValue();
+
+    void setValue(string basicString);
 };
 
 

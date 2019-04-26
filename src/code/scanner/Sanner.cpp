@@ -163,7 +163,7 @@ Node* Scanner::next() {
     strcpy(value, s.c_str());
     char * str = strtok(value, "Ee");
     double valueDouble = atof(str);
-    s = strtok(nullptr, "Ee");
+    str = strtok(nullptr, "Ee");
     valueDouble *= pow(10, atoi(str));
     return new Node(CONST_DOUBLE, to_string(valueDouble));
 }
