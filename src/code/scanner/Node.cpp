@@ -368,7 +368,7 @@ Node *operator/(Node &n1, Node &n2) {
 }
 
 string Node::getValue() {
-    if (typeLexeme == CONST_INT) {
+    if (typeLexeme == CONST_INT || typeLexeme == INT) {
         return to_string(valueInteger);
     } else {
         return to_string(valueDouble);

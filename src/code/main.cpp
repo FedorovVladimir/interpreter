@@ -27,7 +27,7 @@ int main() {
     // разбор лексики
     Lexer* lexer = new Lexer(scanner);
     lexer->start();
-//    lexer->getTree()->display();
+    lexer->getTree()->display();
 
     return 0;
 }

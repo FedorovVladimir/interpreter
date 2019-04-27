@@ -165,13 +165,35 @@ void Lexer::vizovFunction() {
     logPath("Вызов функции");
 
     string name = scanner->getCurrentNode()->name;
-    scanner->next();
     if (!getVar(name)) {
         log("Функция " + name + " не найдена");
     }
     scanner->next();
+
+    scanner->next();
     if (name == "print") {
-        cout << expession()->getValue() << endl;
+        if (scanner->getTypeLexem() == ID) {
+            string nameV = scanner->getCurrentNode()->name;
+            scanner->next();
+            if (!getVar(nameV)) {
+                log("Переменная " + nameV + " не найдена");
+            } else {
+                cout << getVar(nameV)->getValue() << endl;
+            }
+        } else {
+            cout << expession()->getValue() << endl;
+        }
+    }
+    if (name == "scan") {
+        string nameV = scanner->getCurrentNode()->name;
+        if (!getVar(nameV)) {
+            log("Переменная " + nameV + " не найдена");
+        } else {
+            string a;
+            cin >> a;
+            getVar(nameV)->setValue(a);
+        }
+        scanner->next();
     }
     scanner->next();
 }
@@ -325,13 +347,7 @@ Node* Lexer::expession6() {
         if (pNode->getTypeLexem() == CONST_DOUBLE) {
             typeLexeme = CONST_DOUBLE;
         }
-        double value;
-        if (pNode->getTypeLexem() == CONST_DOUBLE) {
-            value = pNode->valueDouble;
-        } else {
-            value = pNode->valueInteger;
-        }
-        return new Node(typeLexeme, to_string(value), "");
+        return new Node(typeLexeme, pNode->getValue(), "");
     }
 
     if (scanner->getTypeLexem() == OPEN_KRUGLAY_SKOBKA) {
