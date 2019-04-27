@@ -14,7 +14,7 @@ string readCode(string path) {
 }
 
 int main() {
-    string text = readCode("../src/resources/testcode4.txt");
+    string text = readCode("../src/resources/testcode5.txt");
     Scanner* scanner = new Scanner(text);
 
     // вывод всех найденых токенов
@@ -27,7 +27,7 @@ int main() {
     // разбор лексики
     Lexer* lexer = new Lexer(scanner);
     lexer->start();
-    lexer->getTree()->display();
+//    lexer->getTree()->display();
 
     return 0;
 }

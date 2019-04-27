@@ -79,7 +79,8 @@ void Lexer::opisanieFunction() {
     if (getVar(name)) {
         logWarning("Переменная " + name + " уже была объявлена");
     }
-    addNode(new Node(FUNCTION, "", name));
+    Node* nodeF = new Node(FUNCTION, "", name);
+    addNode(nodeF);
 
     if (scanner->getTypeLexem() != OPEN_KRUGLAY_SKOBKA) {
         log("Ожидалася символ'('");
@@ -94,6 +95,7 @@ void Lexer::opisanieFunction() {
     if (scanner->getTypeLexem() != OPEN_FIGURNAY_SKOBKA) {
         log("Ожидалася символ'{'");
     }
+    nodeF->point = scanner->getCurrentPosition();
     opisanieOperatora();
 }
 
@@ -183,8 +185,7 @@ void Lexer::vizovFunction() {
         } else {
             cout << expession()->getValue() << endl;
         }
-    }
-    if (name == "scan") {
+    } else if (name == "scan") {
         string nameV = scanner->getCurrentNode()->name;
         if (!getVar(nameV)) {
             log("Переменная " + nameV + " не найдена");
@@ -194,6 +195,11 @@ void Lexer::vizovFunction() {
             getVar(nameV)->setValue(a);
         }
         scanner->next();
+    } else {
+        int currentPoint = scanner->getCurrentPosition();
+        scanner->setCurrentPosition(getVar(name)->point);
+        opisanieOperatora();
+        scanner->setCurrentPosition(currentPoint);
     }
     scanner->next();
 }

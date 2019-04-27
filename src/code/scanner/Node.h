@@ -26,6 +26,7 @@ public:
         double valueDouble;
         int valueInteger;
     };
+    int point;
 
     explicit Node(TypeLexeme typeLexeme) {
         this->typeLexeme = typeLexeme;

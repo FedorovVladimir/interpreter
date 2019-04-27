@@ -1,0 +1,8 @@
+void f() {
+    print(2);
+}
+
+void main() {
+    print(1);
+    f();
+}
