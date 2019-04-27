@@ -121,6 +121,7 @@ void Lexer::opisanieOperatora() {
         }
         scanner->next();
         out();
+        return;
     }
 
     if (scanner->getTypeLexem() == INT || scanner->getTypeLexem() == DOUBLE) {
@@ -130,6 +131,7 @@ void Lexer::opisanieOperatora() {
             log("Ожидалась точька с запятой");
         }
         scanner->next();
+        return;
     }
 
     if (scanner->getTypeLexem() == ID || scanner->getTypeLexem() == MAIN) {
@@ -147,14 +149,17 @@ void Lexer::opisanieOperatora() {
             log("Ожидалась точька с запятой");
         }
         scanner->next();
+        return;
     }
 
     if (scanner->getTypeLexem() == IF) {
         opisanieIf();
+        return;
     }
 
     if (scanner->getTypeLexem() == POINT_COMMA) {
         scanner->next();
+        return;
     }
 }
 
@@ -198,9 +203,11 @@ void Lexer::vizovFunction() {
         if (!getVar(nameV)) {
             log("Переменная " + nameV + " не найдена");
         } else {
-            string a;
-            cin >> a;
-            getVar(nameV)->setValue(a);
+            if (fInt) {
+                string a;
+                cin >> a;
+                getVar(nameV)->setValue(a);
+            }
         }
         scanner->next();
     } else {
@@ -252,11 +259,11 @@ void Lexer::opisanieIf() {
         fInt = false;
     }
 
-    in();
     opisanieOperatora();
-    out();
 
     fInt = !fInt && curentFInt;
+
+    cout << scanner->getCurrentNode()->toString() << "|" << endl;
 
     if (scanner->getTypeLexem() == ELSE) {
         scanner->next();
