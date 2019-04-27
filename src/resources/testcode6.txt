@@ -1,0 +1,10 @@
+void main() {
+    int a = 10;
+    print(a);
+    if (0) {
+        a = 1;
+    } else {
+        a = 0;
+    }
+    print(a);
+}

@@ -238,16 +238,23 @@ void Lexer::opisanieIf() {
     }
     scanner->next();
 
-    expession();
+    Node* pNode = expession();
 
     if (scanner->getTypeLexem() != CLOSE_KRUGLAY_SKOBKA) {
         log("Ожидалася символ')'");
     }
     scanner->next();
 
+    bool curentFInt = fInt;
+    if (pNode->valueDouble == 0) {
+        fInt = false;
+    }
+
     in();
     opisanieOperatora();
     out();
+
+    fInt = !fInt;
 
     if (scanner->getTypeLexem() == ELSE) {
         scanner->next();
@@ -255,6 +262,7 @@ void Lexer::opisanieIf() {
         opisanieOperatora();
         out();
     }
+    fInt = curentFInt;
 }
 
 Node* Lexer::expession() {
