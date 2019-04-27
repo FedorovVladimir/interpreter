@@ -21,6 +21,8 @@ public:
         this->scanner = pScanner;
         this->node = new Node(EMPTY);
         current = node;
+        addNode(new Node(FUNCTION, "", "print"));
+        addNode(new Node(FUNCTION, "", "scan"));
     }
 
     void log(const string& text) {

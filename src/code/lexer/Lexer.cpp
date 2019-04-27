@@ -164,8 +164,15 @@ void Lexer::opisanieOperatorov() {
 void Lexer::vizovFunction() {
     logPath("Вызов функции");
 
+    string name = scanner->getCurrentNode()->name;
     scanner->next();
+    if (!getVar(name)) {
+        log("Функция " + name + " не найдена");
+    }
     scanner->next();
+    if (name == "print") {
+        cout << expession()->getValue() << endl;
+    }
     scanner->next();
 }
 
