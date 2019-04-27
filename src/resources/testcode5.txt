@@ -1,8 +1,13 @@
+int a = 5;
+
 void f() {
+    a = 7;
     print(2);
 }
 
 void main() {
     print(1);
+    print(a);
     f();
+    print(a);
 }

@@ -16,6 +16,7 @@ private:
     bool debug = false;
     Node* node;
     Node* current;
+    bool fInt = false;
 public:
     explicit Lexer(Scanner *pScanner) {
         this->scanner = pScanner;

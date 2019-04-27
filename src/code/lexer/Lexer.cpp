@@ -70,6 +70,9 @@ void Lexer::opisanieFunction() {
     if (scanner->getTypeLexem() != ID && scanner->getTypeLexem() != MAIN) {
         log("Ожидалася идентификатор");
     }
+
+    fInt = scanner->getTypeLexem() == MAIN;
+
     string name = scanner->getCurrentNode()->name;
     if (scanner->getTypeLexem() == MAIN) {
         name = "main";
@@ -180,10 +183,15 @@ void Lexer::vizovFunction() {
             if (!getVar(nameV)) {
                 log("Переменная " + nameV + " не найдена");
             } else {
-                cout << getVar(nameV)->getValue() << endl;
+                if (fInt) {
+                    cout << getVar(nameV)->getValue() << endl;
+                }
             }
         } else {
-            cout << expession()->getValue() << endl;
+            Node* pNode = expession();
+            if (fInt) {
+                cout << pNode->getValue() << endl;
+            }
         }
     } else if (name == "scan") {
         string nameV = scanner->getCurrentNode()->name;
@@ -207,14 +215,17 @@ void Lexer::vizovFunction() {
 void Lexer::savePeramennoy() {
     logPath("Присваивание переменной");
 
+    string name = scanner->getCurrentNode()->name;
     scanner->next();
     scanner->next();
 
     Node* pNode = expession();
-    if (!getVar(pNode->name)) {
+    if (!getVar(name)) {
         log("Переменная не была объявлена");
     } else {
-        getVar(pNode->name)->setValue(pNode->getValue());
+        if (fInt) {
+            getVar(name)->setValue(pNode->getValue());
+        }
     }
 }
 
