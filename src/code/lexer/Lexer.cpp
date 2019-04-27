@@ -204,10 +204,12 @@ void Lexer::vizovFunction() {
         }
         scanner->next();
     } else {
-        int currentPoint = scanner->getCurrentPosition();
-        scanner->setCurrentPosition(getVar(name)->point);
-        opisanieOperatora();
-        scanner->setCurrentPosition(currentPoint);
+        if (fInt) {
+            int currentPoint = scanner->getCurrentPosition();
+            scanner->setCurrentPosition(getVar(name)->point);
+            opisanieOperatora();
+            scanner->setCurrentPosition(currentPoint);
+        }
     }
     scanner->next();
 }
@@ -254,7 +256,7 @@ void Lexer::opisanieIf() {
     opisanieOperatora();
     out();
 
-    fInt = !fInt;
+    fInt = !fInt && curentFInt;
 
     if (scanner->getTypeLexem() == ELSE) {
         scanner->next();

@@ -1,0 +1,19 @@
+int n;
+
+int a = 1, b = 1;
+
+void fib() {
+    n = n - 1;
+    if (n != 0) {
+        b = a + b;
+        a = b - a;
+        print(a);
+        fib();
+    }
+}
+
+void main() {
+    scan(n);
+    print(a);
+    fib();
+}
